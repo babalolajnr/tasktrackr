@@ -1,0 +1,27 @@
+@host={{BASE_URL}}/api/auth
+
+{{+
+    exports.headers = {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+    };
+}}
+
+### Login
+POST /login
+...headers
+
+{
+    "username": "test",
+    "password": "test"
+}
+
+### Register
+POST /register
+...headers
+
+{
+    "username": "babalolajnr",
+    "email": "babalolajnr@example.com",
+    "password": "password123"
+}
