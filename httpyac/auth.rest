@@ -12,8 +12,8 @@ POST /login
 ...headers
 
 {
-    "username": "test",
-    "password": "test"
+    "username": "babalolajnr",
+    "password": "password123"
 }
 
 ### Register

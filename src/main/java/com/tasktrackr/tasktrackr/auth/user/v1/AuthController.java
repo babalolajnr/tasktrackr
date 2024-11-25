@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tasktrackr.tasktrackr.auth.user.UserAuthService;
 import com.tasktrackr.tasktrackr.auth.user.v1.dto.LoginRequest;
 import com.tasktrackr.tasktrackr.auth.user.v1.dto.RegisterRequest;
+import com.tasktrackr.tasktrackr.auth.security.JwtTokenProvider;
 
 import jakarta.validation.Valid;
 
@@ -23,22 +24,28 @@ import jakarta.validation.Valid;
 public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserAuthService userAuthService;
+    private final JwtTokenProvider tokenProvider;
 
-    public AuthController(AuthenticationManager authenticationManager, UserAuthService userAuthService) {
+    public AuthController(AuthenticationManager authenticationManager,
+            UserAuthService userAuthService,
+            JwtTokenProvider tokenProvider) {
         this.authenticationManager = authenticationManager;
         this.userAuthService = userAuthService;
+        this.tokenProvider = tokenProvider;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
-        if (authentication.isAuthenticated()) {
-            return ResponseEntity.ok("User authenticated");
-        }
+        String token = tokenProvider.generateToken(authentication);
 
-        return ResponseEntity.badRequest().body("Invalid credentials");
+        Map<String, String> response = new HashMap<>();
+        response.put("accessToken", token);
+        response.put("tokenType", "Bearer");
+
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/register")
