@@ -22,10 +22,10 @@ public class UserAuthServiceImpl implements UserAuthService {
     @Override
     public User registerUser(RegisterRequest request) {
         if (userService.isUsernameExists(request.getUsername())) {
-            throw new UserRegistrationException("Username already exists", "username");
+            throw new UserRegistrationException("Username already exists");
         }
         if (userService.isEmailExists(request.getEmail())) {
-            throw new UserRegistrationException("Email already exists", "email");
+            throw new UserRegistrationException("Email already exists");
         }
 
         User user = User.builder()
