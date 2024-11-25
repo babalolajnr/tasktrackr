@@ -2,6 +2,7 @@ package com.tasktrackr.tasktrackr.auth.user.v1;
 
 import org.springframework.stereotype.Service;
 
+import com.tasktrackr.tasktrackr.auth.exception.UserRegistrationException;
 import com.tasktrackr.tasktrackr.auth.user.UserAuthService;
 import com.tasktrackr.tasktrackr.auth.user.v1.dto.RegisterRequest;
 import com.tasktrackr.tasktrackr.user.User;
@@ -21,10 +22,10 @@ public class UserAuthServiceImpl implements UserAuthService {
     @Override
     public User registerUser(RegisterRequest request) {
         if (userService.isUsernameExists(request.getUsername())) {
-            throw new RuntimeException("Username already exists");
+            throw new UserRegistrationException("Username already exists", "username");
         }
         if (userService.isEmailExists(request.getEmail())) {
-            throw new RuntimeException("Email already exists");
+            throw new UserRegistrationException("Email already exists", "email");
         }
 
         User user = User.builder()
