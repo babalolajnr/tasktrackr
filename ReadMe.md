@@ -111,5 +111,3 @@
 - **Message Queue**: RabbitMQ/Kafka
 - **Frontend (Optional)**: React/Angular
 - **Deployment**: Docker, AWS/Digital Ocean  
-
-Let me know if you'd like help with any specific aspect of this!
